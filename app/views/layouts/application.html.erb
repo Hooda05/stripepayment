@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>StripePayment</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <script src='https://js.stripe.com/v3/' ></script>
+  </head>
+
+  <body>
+     <p class="notice"><%= notice %></p>
+    <%= link_to "Products", products_path %>
+    <% if current_user %>
+         <%= link_to current_user.email, edit_user_registration_path %>
+         <%= link_to 'log out', destroy_user_session_path, method: :delete %>
+       <% else %>
+         <%= link_to 'log in', new_user_session_path %>
+         <%= link_to 'register', new_user_registration_path %>
+       <% end %>
+       <hr/>
+
+    <h3>Shopping Cart</h3>
+    <% if @cart.empty? %>
+      <p>Your cart is empty</p>
+    <% else %>
+      <ul>
+      <% @cart.each do |product| %>
+        <li><%= product.name %></li>
+      <% end %>
+      </ul>
+      <td><%= button_to 'Checkout', checkout_create_path, remote: true, data: { disable_with: 'please wait!!!' }  %></td>
+    <% end %>
+    <hr/>
+
+    <%= yield %>
+  </body>
+</html>
